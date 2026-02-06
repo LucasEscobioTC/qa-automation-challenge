@@ -1,34 +1,34 @@
 class RegistrationPage {
   constructor(page) {
     this.page = page;
-
     this.nameInput = page.getByRole('textbox', { name: 'Nombre Completo' });
     this.emailInput = page.getByRole('textbox', { name: 'Email' });
-    this.ageInput = page.getByRole('textbox', { name: 'Edad' });
-    this.passwordInput = page.getByRole('textbox', { name: 'Contraseña' });
-    this.confirmPasswordInput = page.getByRole('textbox', { name: 'Confirmar Contraseña' });
-
-    this.submitButton = page.locator('button[type="submit"]');
+    this.ageInput = page.getByRole('spinbutton', { name: 'Edad' }); // number
+    this.passwordInput = page.getByLabel('Contraseña', { exact: true });
+    this.confirmPasswordInput = page.getByLabel('Confirmar Contraseña', { exact: true });
+    this.submitButton = page.getByRole('button', { name: 'Registrarse' });
+    this.errorMessage = page.getByRole('alert');
+    this.successMessage = page.getByRole('status');
   }
 
   async fillForm(data) {
-    if (data.fullName) {
+    if (data.fullName !== undefined) {
       await this.nameInput.fill(data.fullName);
     }
 
-    if (data.email) {
+    if (data.email !== undefined) {
       await this.emailInput.fill(data.email);
     }
 
-    if (data.age) {
-      await this.ageInput.fill(data.age);
+    if (data.age !== undefined) {
+      await this.ageInput.fill(String(data.age));
     }
 
-    if (data.password) {
+    if (data.password !== undefined) {
       await this.passwordInput.fill(data.password);
     }
 
-    if (data.confirmPassword) {
+    if (data.confirmPassword !== undefined) {
       await this.confirmPasswordInput.fill(data.confirmPassword);
     }
   }
@@ -38,11 +38,11 @@ class RegistrationPage {
   }
 
   async isErrorVisible() {
-    return await this.page.getByRole('alert').isVisible();
+    return await this.errorMessage.isVisible();
   }
 
   async isSuccessVisible() {
-    return await this.page.getByRole('status').isVisible();
+    return await this.successMessage.isVisible();
   }
 }
 

@@ -5,6 +5,7 @@ test.describe('Registration Validation Tests', () => {
   let registrationPage;
 
 test.beforeEach(async ({ page }) => {
+  await page.goto('http://localhost:3000');
   registrationPage = new RegistrationPage(page);
 });
 

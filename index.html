@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulario de Registro</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 60px;
+    }
+    form {
+      max-width: 400px;
+    }
+    label {
+      display: block;
+      margin-top: 16px;
+    }
+    input { 
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      box-sizing: border-box
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 20px;
+      box-sizing: border-box;
+      color: rgb(255, 255, 255);
+      font-size: 16px;
+      font-weight: bold;
+      background-color: rgb(57, 149, 224);
+    }
+    .error {
+      color: red;
+      margin-top: 12px;
+    }
+    .success {
+      color: rgb(68, 199, 68);
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Formulario de Registro</h1>
+
+  <form id="registration-form" novalidate>
+
+    <label>
+      Nombre Completo
+      <input type="text" aria-label="Nombre Completo" />
+    </label>
+
+    <label>
+      Email
+      <input type="email" aria-label="Email" />
+    </label>
+
+    <label>
+      Edad
+      <input type="number" aria-label="Edad" />
+    </label>
+
+    <label>
+      Contraseña
+      <input type="password" aria-label="Contraseña" />
+    </label>
+
+    <label>
+      Confirmar Contraseña
+      <input type="password" aria-label="Confirmar Contraseña" />
+    </label>
+
+    <button type="submit">Registrarse</button>
+
+    <div role="alert" class="error" hidden></div>
+    <div role="status" class="success" hidden></div>
+
+  </form>
+
+  <script>
+    const form = document.getElementById('registration-form');
+    const errorBox = document.querySelector('[role="alert"]');
+    const successBox = document.querySelector('[role="status"]');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      errorBox.hidden = true;
+      successBox.hidden = true;
+
+      const inputs = form.querySelectorAll('input');
+      const [name, email, age, pass, confirm] = [...inputs].map(i => i.value);
+
+      if (!name || !email || !age || !pass || !confirm) {
+        errorBox.textContent = 'Todos los campos son obligatorios';
+        errorBox.hidden = false;
+        return;
+      }
+
+      if (Number(age) <= 0) {
+        errorBox.textContent = 'La edad debe ser positiva';
+        errorBox.hidden = false;
+        return;
+      }
+
+      if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+        errorBox.textContent = 'Email inválido';
+        errorBox.hidden = false;
+        return;
+      }
+
+
+      if (pass !== confirm) {
+        errorBox.textContent = 'Las contraseñas no coinciden';
+        errorBox.hidden = false;
+        return;
+      }
+
+      successBox.textContent = `Registro exitoso. Bienvenido/a, ${name}!`;
+      successBox.hidden = false;
+    });
+  </script>
+
+</body>
+</html>
